@@ -12,22 +12,26 @@ public class Program {
 	public static void main(String[] args) {
 
 		Connection conn = null;
-		Statement statement = null;
-		ResultSet resultSet = null;
+		Statement st = null;
+		ResultSet rs = null;
 
 		try {
 			conn = DB.getConnection();
 
-			statement = conn.createStatement();
+			st = conn.createStatement();
 
-			resultSet = statement.executeQuery("select * from department");
+			rs = st.executeQuery("select * from department");
 
-			while (resultSet.next()) {
-				System.out.println(resultSet.getInt("Id") + ", " + resultSet.getString("Name"));
+			while (rs.next()) {
+				System.out.println(rs.getInt("Id") + ", " + rs.getString("Name"));
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+		    DB.closeResultSet(rs);
+		    DB.closeStatement(st);
+			DB.closeConnection();
 		}
 
 	}
